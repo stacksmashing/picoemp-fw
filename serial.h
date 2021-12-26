@@ -7,6 +7,7 @@
 #define cmd_status 3
 #define cmd_enable_timeout 4
 #define cmd_disable_timeout 5
+#define cmd_fast_trigger 6
 #define return_ok 0
 #define return_failed 1
 

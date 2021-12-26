@@ -8,13 +8,16 @@ pico_sdk_init()
 
 add_executable(picoemp)
 
+pico_generate_pio_header(picoemp ${CMAKE_CURRENT_LIST_DIR}/trigger.pio)
+
 
 target_sources(picoemp PRIVATE
         main.c
         picoemp.c
+        serial.c
         )
 
-target_link_libraries(picoemp PRIVATE pico_stdlib hardware_pwm)
+target_link_libraries(picoemp PRIVATE pico_stdlib hardware_pwm hardware_pio pico_multicore)
 pico_add_extra_outputs(picoemp)
 
 # enable usb output, disable uart output

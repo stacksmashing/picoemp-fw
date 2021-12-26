@@ -118,6 +118,19 @@ bool handle_command(char *command) {
         }
         return true;
     }
+    if(strcmp(command, "fast_trigger") == 0) {
+        multicore_fifo_push_blocking(cmd_fast_trigger);
+        uint32_t result = multicore_fifo_pop_blocking();
+        if(result == return_ok) {
+            printf("Fast trigger active...\n");
+            multicore_fifo_pop_blocking();
+            printf("Triggered!\n");
+        } else {
+            printf("Setting up fast trigger failed.");
+        }
+        return true;
+    }
+
     if(strcmp(command, "reset") == 0) {
         watchdog_enable(1, 1);
         while(1);
@@ -137,6 +150,7 @@ void serial_console() {
             printf("- pulse\n");
             printf("- enable_timeout\n");
             printf("- disable_timeout\n");
+            printf("- fast_trigger\n");
             printf("- status\n");
             printf("- reset\n");
         }
