@@ -42,7 +42,6 @@ void update_timeout() {
     timeout_time = delayed_by_ms(get_absolute_time(), 60 * 1000);
 }
 
-
 void fast_trigger() {
     // Choose which PIO instance to use (there are two instances)
     PIO pio = pio0;
@@ -56,7 +55,7 @@ void fast_trigger() {
     // Find a free state machine on our chosen PIO (erroring if there are
     // none). Configure it to run our program, and start it, using the
     // helper function we included in our .pio file.
-    uint sm = pio_claim_unused_sm(pio, true);
+    uint sm = 0;
     trigger_program_init(pio, sm, offset, 0, PIN_OUT_HVPULSE);
     pio_sm_put_blocking(pio, sm, 3000);
 }
@@ -109,6 +108,8 @@ int main() {
                     multicore_fifo_push_blocking(return_ok);
                     while(!pio_interrupt_get(pio0, 0));
                     multicore_fifo_push_blocking(return_ok);
+                    pio_sm_set_enabled(pio0, 0, false);
+                    picoemp_configure_pulse_output();
                     break;
 
             }

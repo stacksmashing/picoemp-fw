@@ -71,6 +71,18 @@ void picoemp_pulse() {
     sleep_ms(250);
 }
 
+void picoemp_configure_pulse_output() {
+    // Configure pulse output
+    gpio_init(PIN_OUT_HVPULSE);
+    gpio_set_dir(PIN_OUT_HVPULSE, GPIO_OUT);
+    // No pullups & pulldowns
+    gpio_set_pulls(PIN_OUT_HVPULSE, false, false);
+    // Adjust slew-rate & drive strength. 
+    gpio_set_drive_strength(PIN_OUT_HVPULSE, GPIO_DRIVE_STRENGTH_12MA);
+    gpio_set_slew_rate(PIN_OUT_HVPULSE, GPIO_SLEW_RATE_FAST);
+    gpio_put(PIN_OUT_HVPULSE, false);
+}
+
 void picoemp_init() {
     // Initialize LED GPIOs
     gpio_init(PIN_LED_HV);
@@ -105,14 +117,7 @@ void picoemp_init() {
     gpio_set_inover(PIN_IN_CHARGED, GPIO_OVERRIDE_INVERT);
 
     // Configure pulse output
-    gpio_init(PIN_OUT_HVPULSE);
-    gpio_set_dir(PIN_OUT_HVPULSE, GPIO_OUT);
-    // No pullups & pulldowns
-    gpio_set_pulls(PIN_OUT_HVPULSE, false, false);
-    // Adjust slew-rate & drive strength. 
-    gpio_set_drive_strength(PIN_OUT_HVPULSE, GPIO_DRIVE_STRENGTH_12MA);
-    gpio_set_slew_rate(PIN_OUT_HVPULSE, GPIO_SLEW_RATE_FAST);
-    gpio_put(PIN_OUT_HVPULSE, false);
+    picoemp_configure_pulse_output();
 
     // Configure PWM pin
     picoemp_disable_pwm();
