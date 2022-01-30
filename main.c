@@ -137,7 +137,9 @@ int main() {
             picoemp_enable_pwm();
         }
 
-        if(timeout_active && (get_absolute_time() > timeout_time) && armed) {
+        if(timeout_active && 
+            (to_us_since_boot(get_absolute_time()) > to_us_since_boot(timeout_time)) 
+            && armed) {
             disarm();
         }
     }
